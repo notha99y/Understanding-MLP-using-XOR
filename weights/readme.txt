@@ -1,0 +1,1 @@
+This folder contains the weights trained using Adam for the XOR problem
