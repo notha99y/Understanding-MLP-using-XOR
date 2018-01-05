@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\begin{document}
+\author{Tan Ren Jie}
+\title{Gradient Descent vs Normal Equation}
+\maketitle
+\tableofcontents
+\pagebreak
+\section{Introduction}
+In this section, we would introduce two common optimization methods for a linear regression model, the Gradient Descent and the Normal Equation. \\ \\
+Some basic definitions:\\ \\
+\textbf{Gradient Descent}: Gradient descent is a first-order iterative optimization algorithm for finding the minimum of a function \\ \\
+\textbf{Normal Equation}: A method which minimizes the sum of the square differences between the left and right sides \\ \\
+A common cost function used in regression problems is the Mean Squared Error (MSE) function defined below:
+\begin{equation}
+	J(\theta) = \frac{1}{2m} \sum_{i = 1}^{m} (\hat{y_i}(x_i, \theta) - y_i)^2
+\end{equation}
+where,\\ \\
+$\hat{y_i}$ represents the prediction, \\ \\
+$x_i$ represents the independent variable, \\ \\
+$\theta$ represents the model parameters, \\ \\
+$y_i$ represents the dependent variable, a.k.a the ground truth. \\ \\
+In the case for linear regression of multiple variables (features), we can represent $\hat{y}$ in the following matrix representation:
+\begin{equation}
+	\hat{y_i} = \sum_{j = 0}^{n} x_{i,j}^{T} \theta_j
+\end{equation}
+where we set $x_{i,0}$ to be $1$ to represent the bias term. \\ \\
+By the definition of Total Derivative, we can derive the form of Gradient Descent represented by the following parameters updates:\
+\begin{equation}
+	\Delta \theta_j = -\eta \frac{\partial J}{\partial \theta_j}
+\end{equation}
+where $\eta$ is the learning rate. \\ \\
+By iterating, we can then converge to the optimal values of $\theta$ that minimizes the cost function, $J$ \\ \\
+For Normal Equation, we define a matrix, $X_{i,j}$, commonly known as the design matrix where $i$ indexes the training sample and $j$ indexes the features. i.e. $X_{10,3}$ refers to the $3^{rd}$ feature of the $10^{th}$ training sample. With $X$, we have the following:
+\begin{equation}
+	\hat{Y_i} = X_{i,j} \theta_j
+\end{equation}
+By setting $J = 0$ we get the following form:
+\begin{equation}
+	\theta = (X^TX)^{-1}X^TY
+\end{equation} 
+By solving this, we can get the optimal values of $\theta$ that minimizes the cost function,  $J$.
+\section{Comparison}
+\begin{center}
+	\begin{tabular}{ |c|c| } 
+		\hline
+		\textbf{Gradient Descent} & \textbf{Normal Equation} \\
+		\hline 
+		Need to choose $\alpha$ & No need to  choose $\alpha$ \\
+		Needs many iterations & Solve in one step  \\ 
+		$O(n^2)$ works better when $m$ is large & Need to compute $(X^TX)^{-1}$ which is $O(n^3)$, slows when $m$ is large \\
+		Need to do Feature scaling & No need to do Feature scaling \\
+		Don't need to invert $X^TX$ & $X^TX$ might not be able to invert all the time \\
+		\hline
+	\end{tabular}
+\end{center}
+According to Andrew Ng in the video in Coursera, there are some rare times when $X^TX$ is non-invertible for linear regression models. In these rare times, it is mainly because of the following reasons:
+\begin{itemize}
+	\item Redundant features (linearly dependent)
+		\begin{itemize}
+			\item E.g. $x_1 = $ size in feet$^2$
+			\item E.g. $x_2 = $ size in m$^2$
+			\item $\rightarrow x_1 = (3.28)^2 x_2$
+		\end{itemize}
+	\item Too many features (e.g. $m \le n$)
+	\begin{itemize}
+		\item Delete some features, or use regularization
+	\end{itemize}
+\end{itemize} 
+\end{document}
